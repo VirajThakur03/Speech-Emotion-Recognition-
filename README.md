@@ -94,7 +94,7 @@ Name: Viraj
 
 Email: virajthakur987.vt@gmail.com
 
-GitHub: @yourusername
+GitHub: @VirajThakur03
 
 📜 License
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is for educational purposes only.
