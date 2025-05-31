@@ -1,0 +1,518 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Emotion Recognition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --primary-light: #4895ef;
+            --primary-dark: #3f37c9;
+            --secondary: #f72585;
+            --success: #4cc9f0;
+            --danger: #ef233c;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gray: #6c757d;
+            --border-radius: 16px;
+            --box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--dark);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-attachment: fixed;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 800px;
+            width: 100%;
+            margin: 2rem auto;
+            padding: 3rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            animation: fadeIn 0.8s ease-out;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 70%);
+            z-index: -1;
+            transform: rotate(30deg);
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.8rem;
+            color: var(--primary-dark);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--gray);
+            margin: 2rem 0;
+            text-align: center;
+            font-weight: 500;
+            position: relative;
+        }
+
+        h2::before, h2::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.1));
+        }
+
+        h2::before {
+            left: 0;
+        }
+
+        h2::after {
+            right: 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.1), transparent);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .file-input-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--border-radius);
+            background: var(--light);
+            box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.05);
+            transition: var(--transition);
+        }
+
+        .file-input-wrapper:hover {
+            box-shadow: inset 5px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            padding: 1.2rem 1.5rem;
+            cursor: pointer;
+        }
+
+        .file-input-label i {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-right: 1rem;
+            transition: var(--transition);
+        }
+
+        .file-input-text {
+            flex-grow: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            width: 100%;
+            margin: 0.5rem 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255,255,255,0.2), transparent);
+            transform: translateY(-100%);
+            transition: var(--transition);
+        }
+
+        .btn:hover::after {
+            transform: translateY(0);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(63, 55, 201, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger), #c1121f);
+            color: white;
+            display: none;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(239, 35, 60, 0.3);
+        }
+
+        .audio-preview {
+            width: 100%;
+            margin: 2rem 0;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: var(--transition);
+            display: none;
+        }
+
+        .audio-preview:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+:root {
+    --success: #4cc9f0;
+    --border-radius: 12px;
+    --transition: all 0.3s ease;
+}
+
+/* Centering container */
+.center-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20vh; /* Full viewport height */
+    background-color: #f9f9f9; /* Optional */
+}
+
+/* Emotion result box */
+.emotion-result {
+    padding: 1.5rem 2rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--success);
+    border-radius: var(--border-radius);
+    background: rgba(76, 201, 240, 0.1);
+    border: 2px solid var(--success);
+    text-align: center;
+    display: inline-block;
+    animation: pulse 2s infinite;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: var(--transition);
+}
+
+/* Hover effect */
+.emotion-result:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(76, 201, 240, 0.2);
+}
+
+
+
+        .visualizer {
+            width: 100%;
+            height: 100px;
+            background: rgba(0,0,0,0.05);
+            border-radius: var(--border-radius);
+            margin: 1.5rem 0;
+            overflow: hidden;
+            position: relative;
+            display: none;
+        }
+
+        .visualizer-bar {
+            position: absolute;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to top, var(--primary), var(--secondary));
+            border-radius: 2px;
+            transition: height 0.1s ease;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            h2::before, h2::after {
+                width: 25%;
+            }
+
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 1rem;
+            }
+        }
+
+        /* Microphone animation */
+        @keyframes pulse-record {
+            0% { box-shadow: 0 0 0 0 rgba(239, 35, 60, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(239, 35, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 35, 60, 0); }
+        }
+
+        .recording {
+            animation: pulse-record 1.5s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Speech Emotion Recognition</h1>
+
+        <!-- Upload Audio Form -->
+        <form id="upload-form" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <div class="file-input-wrapper">
+                    <label class="file-input-label" for="file-upload">
+                        <i class="fas fa-file-audio"></i>
+                        <span class="file-input-text">Choose an audio file (.wav)</span>
+                        <input id="file-upload" type="file" name="file" accept=".wav, audio/wav" required>
+                    </label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-cloud-upload-alt" style="margin-right: 10px;"></i> Upload & Analyze
+            </button>
+        </form>
+
+        <h2>OR RECORD LIVE</h2>
+
+        <!-- Audio Visualizer -->
+        <div class="visualizer" id="visualizer"></div>
+
+        <!-- Record Audio Button -->
+        <button id="record-btn" class="btn btn-success">
+            <i class="fas fa-microphone" style="margin-right: 10px;"></i> Start Recording
+        </button>
+        <button id="stop-btn" class="btn btn-danger">
+            <i class="fas fa-stop" style="margin-right: 10px;"></i> Stop Recording
+        </button>
+        
+        <audio id="audio-preview" class="audio-preview" controls></audio>
+
+        <!-- Hidden Form for Recorded Audio Submission -->
+        <form id="recorded-audio-form" method="POST" enctype="multipart/form-data" action="{% url 'upload_audio' %}" style="display:none;">
+            {% csrf_token %}
+            <input type="file" name="recorded_audio" id="recorded-audio-input" accept=".wav, audio/wav">
+            <button type="submit" class="btn btn-primary">Analyze Recorded Audio</button>
+        </form>
+
+        <!-- Display Detected Emotion -->
+    <div class="center-wrapper">
+        {% if emotion %}
+            <div class="emotion-result">Detected Emotion: {{ emotion }}</div>
+        {% endif %}
+    </div>
+    </div>
+
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let audioContext;
+        let analyser;
+        let dataArray;
+        let animationId;
+        const visualizer = document.getElementById('visualizer');
+
+        document.getElementById("record-btn").addEventListener("click", async function() {
+            try {
+                // Initialize audio context
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                const bufferLength = analyser.frequencyBinCount;
+                dataArray = new Uint8Array(bufferLength);
+
+                // Start recording
+                let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                const source = audioContext.createMediaStreamSource(stream);
+                source.connect(analyser);
+                
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.start();
+                
+                // Visualize audio
+                visualizer.style.display = 'block';
+                visualize();
+                
+                // UI changes
+                document.getElementById("record-btn").classList.add('recording');
+                document.getElementById("record-btn").style.display = "none";
+                document.getElementById("stop-btn").style.display = "block";
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = async () => {
+                    // Stop visualization
+                    cancelAnimationFrame(animationId);
+                    visualizer.style.display = 'none';
+                    
+                    let audioBlob = new Blob(audioChunks, { type: "audio/wav" });
+                    let audioUrl = URL.createObjectURL(audioBlob);
+
+                    document.getElementById("audio-preview").src = audioUrl;
+                    document.getElementById("audio-preview").style.display = "block";
+
+                    let file = new File([audioBlob], "recorded_audio.wav", { type: "audio/wav" });
+                    let dataTransfer = new DataTransfer();
+                    dataTransfer.items.add(file);
+                    document.getElementById("recorded-audio-input").files = dataTransfer.files;
+
+                    document.getElementById("recorded-audio-form").style.display = "block";
+                    document.getElementById("upload-form").style.display = "none";
+                    
+                    // Clean up
+                    stream.getTracks().forEach(track => track.stop());
+                };
+            } catch (error) {
+                console.error("Error accessing microphone:", error);
+                alert("Error accessing microphone. Please ensure you've granted microphone permissions.");
+            }
+        });
+
+        function visualize() {
+            animationId = requestAnimationFrame(visualize);
+            analyser.getByteFrequencyData(dataArray);
+            
+            // Clear visualizer
+            visualizer.innerHTML = '';
+            
+            // Create bars
+            const barWidth = (visualizer.offsetWidth / dataArray.length) * 2.5;
+            let x = 0;
+            
+            for(let i = 0; i < dataArray.length; i++) {
+                const barHeight = dataArray[i] / 2;
+                const bar = document.createElement('div');
+                bar.className = 'visualizer-bar';
+                bar.style.left = x + 'px';
+                bar.style.width = barWidth + 'px';
+                bar.style.height = barHeight + 'px';
+                visualizer.appendChild(bar);
+                x += barWidth + 2;
+            }
+        }
+
+        document.getElementById("stop-btn").addEventListener("click", function() {
+            mediaRecorder.stop();
+            document.getElementById("record-btn").classList.remove('recording');
+            document.getElementById("stop-btn").style.display = "none";
+            document.getElementById("record-btn").style.display = "block";
+        });
+
+        // Update file input display
+        document.getElementById('file-upload').addEventListener('change', function(e) {
+            const fileName = e.target.files[0] ? e.target.files[0].name : 'Choose an audio file (.wav)';
+            document.querySelector('.file-input-text').textContent = fileName;
+        });
+    </script>
+</body>
+</html>

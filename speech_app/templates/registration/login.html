@@ -1,0 +1,154 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @keyframes gradient {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.3);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #fff;
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 28px;
+        }
+
+        .login-container label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .login-container input::placeholder {
+            color: #e0e0e0;
+        }
+
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            background-color: #ffffff;
+            color: #111;
+            font-weight: bold;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-container button:hover {
+            background-color: #23a6d5;
+            color: white;
+        }
+
+        .signup-link,
+        .login-container p {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .signup-link a,
+        .login-container a {
+            color: #ffffff;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+
+        .signup-link a:hover,
+        .login-container a:hover {
+            color: #ffd700;
+        }
+.login-container h2 span.title-text {
+    color: #000; /* Black text */
+    font-weight: 700;
+    text-decoration: underline; /* Underline */
+    text-underline-offset: 4px; /* Nicely spaced from text */
+}
+
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h2><i class="fas fa-headphones-alt"></i> <span class="title-text">Speech Emotion Recognition</span></h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" placeholder="Enter your username" required>
+
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" placeholder="Enter your password" required>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div class="signup-link">
+            Don't have an account? <a href="{% url 'signup' %}">Sign up here</a>
+        </div>
+        <p><a href="{% url 'password_reset' %}">Forgot your password?</a></p>
+    </div>
+</body>
+</html>
