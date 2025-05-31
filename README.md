@@ -2,7 +2,7 @@
 Speech Emotion Recognition Web App
 A Flask-based web application for real-time and file-based speech emotion recognition using deep learning. This project classifies emotions from audio input, either through live microphone recording or uploaded audio files.
 
-🚀 Features
+#Features-
 
 🔒 Login Screen for authentication
 
@@ -19,3 +19,19 @@ A Flask-based web application for real-time and file-based speech emotion recogn
 📦 Flask backend for API handling and prediction
 
 ☁️ Server-hostable for deployment on platforms like Heroku, Render, etc.
+
+#Project Structure-
+speech_emotion_recognition/
+│
+├── static/                  # CSS, JS, and UI assets
+├── templates/               # HTML templates
+│   ├── index.html           # Login page
+│   └── home.html            # Main dashboard page
+│
+├── model/                   # Pre-trained model and training code
+│   └── emotion_model.h5     # Trained emotion recognition model
+│
+├── app.py                   # Main Flask application
+├── utils.py                 # Audio processing and model functions
+├── requirements.txt         # Python dependencies
+└── README.md                # Project overview
