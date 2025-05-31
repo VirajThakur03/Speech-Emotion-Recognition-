@@ -36,3 +36,14 @@ speech_emotion_recognition/
 ├── utils.py                 # Audio processing and model functions
 ├── requirements.txt         # Python dependencies
 └── README.md                # Project overview
+
+# Installation-
+git clone https://github.com/yourusername/speech_emotion_recognition.git
+cd speech_emotion_recognition
+
+# Create virtual environment
+python -m venv venv
+source venv/bin/activate   # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
