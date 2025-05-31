@@ -55,3 +55,46 @@ pip install -r requirements.txt
 python app.py
 
 Visit http://127.0.0.1:5000/ in your browser.
+
+# Emotions Detected-
+Neutral 😐
+
+Happy 😄
+
+Sad 😢
+
+Angry 😠
+
+Fearful 😨
+
+Disgust 😒
+
+Surprised 😲
+
+# Model Information-
+Dataset: RAVDESS / TESS (or your dataset)
+
+Features: MFCCs, Chroma, Mel Spectrogram
+
+Model: CNN / LSTM (based on training configuration)
+
+Framework: TensorFlow / Keras
+
+# Deployment-
+You can deploy this app on:
+
+🔸 Render
+
+🔸 Heroku
+
+🔸 Replit
+
+# Author-
+Name: Viraj
+
+Email: virajthakur987.vt@gmail.com
+
+GitHub: @yourusername
+
+📜 License
+This project is licensed under the MIT License. See the LICENSE file for details.
