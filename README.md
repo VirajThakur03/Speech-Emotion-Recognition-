@@ -41,9 +41,9 @@ speech_emotion_recognition/
 git clone https://github.com/yourusername/speech_emotion_recognition.git
 cd speech_emotion_recognition
 
-# Create virtual environment
+#Create virtual environment
 python -m venv venv
 source venv/bin/activate   # On Windows: venv\Scripts\activate
 
-# Install dependencies
+#Install dependencies
 pip install -r requirements.txt
